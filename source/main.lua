@@ -1,8 +1,15 @@
+import "CoreLibs/object"
 import "CoreLibs/graphics"
+import "CoreLibs/sprites"
 
-local gfx <const> = playdate.graphics
+import "scenes/game"
 
-function playdate.update() 
-    gfx.clear()
-    gfx.drawText("Hello World", 20, 20)
+local pd <const> = playdate
+local gfx <const> = pd.graphics
+
+math.randomseed(playdate.getSecondsSinceEpoch())
+Game()
+
+function pd.update()
+  gfx.sprite.update()
 end
