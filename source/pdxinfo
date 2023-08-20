@@ -3,5 +3,5 @@ author=Ted
 description=beep boop
 bundleID=com.tedbrakob.slug
 version=0.1.0
-buildNumber=77
+buildNumber=86
 imagePath=SystemAssets

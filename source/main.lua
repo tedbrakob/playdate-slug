@@ -9,7 +9,7 @@ local pd <const> = playdate
 local gfx <const> = pd.graphics
 
 math.randomseed(playdate.getSecondsSinceEpoch())
-GameScene()
+SCENE_MANAGER:switchScene(GameScene)
 
 function pd.update()
   gfx.sprite.update()

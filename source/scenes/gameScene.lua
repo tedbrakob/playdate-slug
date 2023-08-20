@@ -20,8 +20,6 @@ function GameScene:init()
 end
 
 function GameScene:restart()
-  gfx.sprite.removeAll()
-
   self.frame = Frame(self.scale)
   self.playGridRect = self.frame:getPlayGridRect()
 
@@ -37,7 +35,7 @@ end
 function GameScene:update()
   if (pd.buttonIsPressed(pd.kButtonA) and pd.buttonIsPressed(pd.kButtonB)) then
     if self.player.gameOver then
-      self:restart()
+      SCENE_MANAGER:switchScene(GameScene)
     end
   end
 
