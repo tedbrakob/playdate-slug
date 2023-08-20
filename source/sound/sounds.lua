@@ -1,5 +1,3 @@
-import "CoreLibs/object"
-
 local pd <const> = playdate
 local snd = pd.sound
 
