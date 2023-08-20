@@ -1,6 +1,7 @@
 import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
+
 import "deque"
 import "sprites/snake/body"
 
@@ -10,6 +11,11 @@ local gfx <const> = pd.graphics
 class('Head').extends(gfx.sprite)
 
 function Head:init(x, y, speed, size, playGridRect)
+  self.initialLength = 1
+  self.speedIncreasePerGoal = .1
+  self.lengthIncreasePerGoal = 1
+  self.maxSpeed = 12
+
   self.playGridRect = playGridRect
   self.body = Deque()
   self.size = size
@@ -30,7 +36,7 @@ function Head:init(x, y, speed, size, playGridRect)
   self.direction = 0
   self.lastMovementDirection = 0
 
-  self.addSegments = 3
+  self.addSegments = self.initialLength - 1
 
   self.gameOver = false
 
@@ -164,15 +170,17 @@ function Head:checkSpriteCollisions(x, y)
 
   for _, sprite in ipairs(sprites) do
     if (sprite:isa(Goal)) then
+      SOUNDS:beep()
       self.score += 1
       sprite:move()
 
-      if self.speed < 12 then
-        self.speed += .25
+      if self.speed < self.maxSpeed then
+        self.speed += self.speedIncreasePerGoal
       end
 
-      self.addSegments += 4
+      self.addSegments += self.lengthIncreasePerGoal
     elseif (sprite:isa(Body)) then
+      SOUNDS:crash()
       self.gameOver = true
       return
     end
@@ -203,6 +211,7 @@ function Head:update()
 
   self.lastMovementDirection = self.direction
   if self:outOfBounds() then
+    SOUNDS:crash()
     self.gameOver = true
     return
   end
@@ -218,6 +227,8 @@ function Head:update()
   if (self.addSegments > 0) then
     self.addSegments -= 1
     self:addSegment()
+  else
+    -- SOUNDS:tick()
   end
 
   self:moveBody(oldPosition.x, oldPosition.y)

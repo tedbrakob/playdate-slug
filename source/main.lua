@@ -2,13 +2,14 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 
-import "scenes/game"
+import "scenes/gameScene"
+import "globals"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
 math.randomseed(playdate.getSecondsSinceEpoch())
-Game()
+GameScene()
 
 function pd.update()
   gfx.sprite.update()

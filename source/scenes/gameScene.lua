@@ -10,16 +10,16 @@ import "sprites/score"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-class('Game').extends(gfx.sprite)
+class('GameScene').extends(gfx.sprite)
 
-function Game:init()
+function GameScene:init()
   self.scale = 12
   self.speed = 4
 
   self:restart()
 end
 
-function Game:restart()
+function GameScene:restart()
   gfx.sprite.removeAll()
 
   self.frame = Frame(self.scale)
@@ -34,7 +34,7 @@ function Game:restart()
   self:add()
 end
 
-function Game:update()
+function GameScene:update()
   if (pd.buttonIsPressed(pd.kButtonA) and pd.buttonIsPressed(pd.kButtonB)) then
     if self.player.gameOver then
       self:restart()
