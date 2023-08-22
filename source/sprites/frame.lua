@@ -18,7 +18,7 @@ function Frame:init(scale)
     gfx.setColor(gfx.kColorBlack)
 
     gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-    gfx.drawText("SLUG", self.playGridRect.x, 2)
+    FONT_ROOBERT_11_MEDIUM:drawText("SLUG", self.playGridRect.x, 0)
     gfx.setImageDrawMode(gfx.kDrawModeCopy)
   gfx.popContext()
 
@@ -30,7 +30,7 @@ end
 
 function Frame:getBorderWidths()
   local topBorderWidth = 20
-  local minBorderWidth = 5
+  local minBorderWidth = 0
 
   local effectiveTopBorderWidth = topBorderWidth + 1
   local effectiveMinBorderWidth = minBorderWidth + 1

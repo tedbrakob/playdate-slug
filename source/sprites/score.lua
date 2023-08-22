@@ -14,12 +14,14 @@ function Score:init(score, x, y)
 end
 
 function Score:updateText()
-  local w, h = gfx.getTextSize(self.value)
+  local w = FONT_ROOBERT_11_MEDIUM:getTextWidth(self.value)
+  local h = FONT_ROOBERT_11_MEDIUM:getHeight(self.value)
+
   local image = gfx.image.new(w, h)
 
   gfx.pushContext(image)
     gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-    gfx.drawTextAligned(self.value, w, 0, kTextAlignment.right)
+    FONT_ROOBERT_11_MEDIUM:drawTextAligned(self.value, w, 0, kTextAlignment.right)
   gfx.popContext()
 
   self:setImage(image)

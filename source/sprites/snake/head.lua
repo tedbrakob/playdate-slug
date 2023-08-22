@@ -37,7 +37,6 @@ function Head:init(x, y, speed, size, playGridRect)
 
   gfx.pushContext(image)
     gfx.setColor(gfx.kColorBlack)
-    -- gfx.fillRect(1, 1, size - 2, size - 2)
     gfx.fillRect(0, 0, size, size)
   gfx.popContext()
 
@@ -173,10 +172,19 @@ function Head:checkSpriteCollisions(x, y)
 
       self.addSegments += self.lengthIncreasePerGoal
     elseif (sprite:isa(Body)) then
-      SOUNDS:crash()
-      self.gameOver = true
+      self:crash()
       return
     end
+  end
+end
+
+function Head:crash()
+  SOUNDS:crash()
+
+  if HighScoresTable.isHighScore(self.score) then
+    SCENE_MANAGER:switchScene(HighScoreScene, self.score)
+  else
+    SCENE_MANAGER:switchScene(GameOverScene, self.score)
   end
 end
 
@@ -204,8 +212,7 @@ function Head:update()
 
   self.lastMovementDirection = self.direction
   if self:outOfBounds() then
-    SOUNDS:crash()
-    self.gameOver = true
+    self:crash()
     return
   end
 
@@ -220,9 +227,8 @@ function Head:update()
   if (self.addSegments > 0) then
     self.addSegments -= 1
     self:addSegment()
-  else
-    -- SOUNDS:tick()
   end
 
   self:moveBody(oldPosition.x, oldPosition.y)
 end
+
