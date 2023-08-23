@@ -1,6 +1,5 @@
 import "CoreLibs/object"
 import "CoreLibs/graphics"
-import "CoreLibs/graphics"
 import "CoreLibs/animation"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
@@ -34,6 +33,11 @@ HighScoresTable.readFromDatastore()
 SCENE_MANAGER:switchScene(GameScene)
 
 function pd.update()
+  -- enable for high score table debugging
+  -- if pd.buttonIsPressed(pd.kButtonUp) and pd.buttonIsPressed(pd.kButtonA) and pd.buttonIsPressed(pd.kButtonB) then
+  --   HighScoresTable.reset()
+  -- end
+
   gfx.sprite.update()
   gfx.animation.blinker.updateAll()
 end

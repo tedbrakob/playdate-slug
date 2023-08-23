@@ -4,7 +4,10 @@ local gfx <const> = pd.graphics
 
 class('HighScoresTable').extends()
 
-local filename = 'highScoresTable'
+local highScoresTableFilename = 'highScoresTable'
+local lastUsedNameFilename = 'highScoresTable-lastUsedName'
+
+local defaultName = 'AAA'
 local maxLength = 5
 
 function HighScoresTable.reset()
@@ -12,16 +15,17 @@ function HighScoresTable.reset()
 end
 
 function HighScoresTable.writeToDatastore(hst)
-  ds.write(hst, filename)
+  ds.write(hst, highScoresTableFilename)
   HighScoresTable.updateMenuImage(hst)
 end
 
 function HighScoresTable.readFromDatastore()
-  local hst = ds.read(filename)
+  local hst = ds.read(highScoresTableFilename)
 
   if (hst == nil) then
     hst = {}
     HighScoresTable.writeToDatastore(hst)
+    HighScoresTable.writeLastUsedName(defaultName)
   end
 
   HighScoresTable.updateMenuImage(hst)
@@ -54,7 +58,21 @@ function HighScoresTable.addRecord(score, name)
 
   table.sort(hst, function(a, b) return b.value < a.value end)
   HighScoresTable.writeToDatastore(hst)
+  HighScoresTable.writeLastUsedName(name)
+end
 
+function HighScoresTable.writeLastUsedName(name)
+  ds.write({ name }, lastUsedNameFilename)
+end
+
+function HighScoresTable.readLastUsedName()
+  local name = ds.read(lastUsedNameFilename)
+
+  if name == nil then
+    return defaultName
+  end
+
+  return name[1]
 end
 
 function HighScoresTable.updateMenuImage(hst)

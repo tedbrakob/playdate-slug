@@ -6,9 +6,9 @@ class('HighScoreScene').extends(gfx.sprite)
 --[[
   copy and edit keyboard from sdk corelibs for maxlength 3 and caps only
 ]]
-
 function HighScoreScene:init(score)
-  self.name = 'AAA'
+  self.name = HighScoresTable.readLastUsedName()
+
   self.score = score
   self.currentIndex = 1
 
@@ -29,8 +29,16 @@ function HighScoreScene:init(score)
   self:add()
 
   pd.keyboard.show()
+  self.currentCharSlot = 1
+  self.charSlots[self.currentCharSlot]:activate()
 
   function pd.keyboard.textChangedCallback()
+    local backspace = false
+    if #pd.keyboard.text < #self.name then
+      backspace = true
+    end
+
+    self.charSlots[self.currentCharSlot]:deactivate()
     self.name = pd.keyboard.text
 
     if #self.name > 3 then
@@ -38,18 +46,21 @@ function HighScoreScene:init(score)
       pd.keyboard.text = self.name
     end
 
-    if #self.name == 0 then
-      return
-    end
+    self.currentCharSlot = math.min(#self.name + 1, 3)
+    self.charSlots[self.currentCharSlot]:activate()
 
-    self:updateCharSlot(#self.name)
+    if backspace or #self.name == 0 then
+      self:updateCharSlot(#self.name + 1)
+    else
+      self:updateCharSlot(#self.name)
+    end
   end
 
   function pd.keyboard.keyboardWillHideCallback(confirmed)
     if confirmed ~= true then
       return
     end
-
+  
     HighScoresTable.addRecord(self.score, self.name)
     SCENE_MANAGER:switchScene(GameScene)
   end
